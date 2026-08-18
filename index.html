@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Weekend in Budapest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EF;
+    --paper-2:#F3ECDD;
+    --wine:#7A2E44;
+    --wine-deep:#5C2233;
+    --gold:#B98B2A;
+    --ink:#362A2A;
+    --soft:#8C7568;
+    --teal:#2E6E74;
+    --teal-deep:#204F54;
+    --line:#E3D6BE;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lora',serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  h1,h2,h3,.display{
+    font-family:'Unbounded',sans-serif;
+    letter-spacing:0.01em;
+  }
+  a{color:inherit;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(251,247,239,0.96);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:10px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .topbar .brand{
+    font-family:'Unbounded',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:var(--wine);
+    letter-spacing:0.04em;
+    white-space:nowrap;
+  }
+  .daynav{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    flex:1;
+    justify-content:center;
+  }
+  .daynav::-webkit-scrollbar{display:none;}
+  .daynav a{
+    font-family:'Lora',serif;
+    font-size:12px;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--soft);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 11px;
+    white-space:nowrap;
+  }
+  .langswitch{
+    display:flex;
+    border:1.5px solid var(--wine);
+    border-radius:20px;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .langswitch button{
+    border:none;
+    background:transparent;
+    color:var(--wine);
+    font-family:'Unbounded',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    padding:6px 10px;
+    cursor:pointer;
+  }
+  .langswitch button.active{
+    background:var(--wine);
+    color:var(--paper);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    text-align:center;
+    padding:44px 20px 30px;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse at 50% 0%, var(--paper-2) 0%, var(--paper) 70%);
+  }
+  .hero .eyebrow{
+    font-size:12px;
+    letter-spacing:0.18em;
+    color:var(--soft);
+    text-transform:uppercase;
+    font-family:'Lora',serif;
+    font-style:italic;
+  }
+  .hero h1{
+    font-size:clamp(34px,10vw,54px);
+    color:var(--wine);
+    margin:8px 0 10px;
+    font-weight:800;
+    line-height:1.05;
+  }
+  .hero .dates{
+    display:inline-block;
+    font-size:13px;
+    letter-spacing:0.1em;
+    color:var(--gold);
+    font-weight:600;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:6px 0;
+  }
+  .hero .sub{
+    margin-top:18px;
+    font-style:italic;
+    color:var(--ink);
+    font-size:15px;
+  }
+  .hero .sub b{ color:var(--wine); font-style:normal; }
+
+  /* ---------- section shell ---------- */
+  .wrap{ max-width:640px; margin:0 auto; padding:0 16px; }
+  .plan-summary{
+    padding:24px 0 4px;
+  }
+  .plan-summary li{ margin-bottom:8px; }
+  .note{
+    font-style:italic;
+    color:var(--soft);
+    font-size:14px;
+    margin:14px 0 4px;
+  }
+
+  .stamp-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:38px 0 4px;
+  }
+  .stamp{
+    flex-shrink:0;
+    width:64px;height:64px;
+    border-radius:50%;
+    border:2px solid var(--wine);
+    outline:1px solid var(--wine);
+    outline-offset:3px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(-4deg);
+    color:var(--wine);
+    font-family:'Unbounded',sans-serif;
+  }
+  .stamp .d{ font-size:9px; letter-spacing:0.06em; }
+  .stamp .n{ font-size:18px; font-weight:800; line-height:1; margin-top:2px;}
+  .daytitle h2{
+    color:var(--wine);
+    font-size:22px;
+    margin:0 0 2px;
+  }
+  .daytitle .datestr{
+    font-size:12.5px;
+    color:var(--soft);
+    font-style:italic;
+    font-family:'Lora',serif;
+  }
+
+  .section-label{
+    font-family:'Unbounded',sans-serif;
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin:24px 0 10px;
+    padding-bottom:6px;
+    border-bottom:1px dashed var(--line);
+  }
+
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 14px 13px;
+    margin-bottom:10px;
+    box-shadow:0 1px 2px rgba(90,60,40,0.04);
+  }
+  .card .row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .card .name-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    color:var(--wine-deep);
+    font-weight:600;
+    font-size:16px;
+    border-bottom:1px solid transparent;
+  }
+  .card .name-link:active{ opacity:0.7; }
+  .card .name-link svg{ flex-shrink:0; }
+  .card .place{
+    font-size:12.5px;
+    color:var(--teal-deep);
+    font-style:italic;
+  }
+  .card p.desc{
+    margin:7px 0 0;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  .maplink{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-top:9px;
+    font-family:'Unbounded',sans-serif;
+    font-size:10.5px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--teal);
+    text-decoration:none;
+    border:1px solid var(--teal);
+    border-radius:20px;
+    padding:5px 10px;
+  }
+  .maplink:active{ background:var(--teal); color:#fff; }
+
+  .plain-list{ padding-left:0; margin:6px 0 0; list-style:none; }
+  .plain-list li{
+    position:relative;
+    padding-left:18px;
+    margin-bottom:9px;
+    font-size:14.5px;
+  }
+  .plain-list li:before{
+    content:"•";
+    position:absolute;
+    left:0;
+    color:var(--gold);
+    font-weight:700;
+  }
+
+  .tip{ margin-bottom:9px; font-size:14.5px; }
+  .tip b{ color:var(--wine); }
+
+  .hotel-card{
+    background:var(--wine);
+    color:var(--paper);
+    border-radius:var(--radius);
+    padding:18px 16px;
+    margin:16px 0 6px;
+  }
+  .hotel-card .htitle{
+    font-family:'Unbounded',sans-serif;
+    font-weight:600;
+    font-size:17px;
+  }
+  .hotel-card .haddr{
+    font-style:italic;
+    font-size:13px;
+    color:var(--paper-2);
+    margin-top:3px;
+  }
+  .hotel-card p{ font-size:14px; margin:10px 0 6px; }
+  .hotel-card .maplink{
+    border-color:var(--gold);
+    color:var(--gold);
+  }
+  .hotel-card .maplink:active{ background:var(--gold); color:var(--wine-deep); }
+  .hotel-card ul{ margin:8px 0 0; padding-left:18px; font-size:14px; }
+  .hotel-card ul li{ margin-bottom:5px; }
+
+  .pagefoot{
+    text-align:center;
+    color:var(--soft);
+    font-size:12px;
+    font-style:italic;
+    margin-top:46px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+
+  [data-lang]{ display:none; }
+  body.lang-en [data-lang="en"]{ display:initial; }
+  body.lang-uk [data-lang="uk"]{ display:initial; }
+  body.lang-en li[data-lang="en"],
+  body.lang-uk li[data-lang="uk"]{ display:list-item; }
+  body.lang-en p[data-lang="en"],
+  body.lang-uk p[data-lang="uk"]{ display:block; }
+  body.lang-en div[data-lang="en"],
+  body.lang-uk div[data-lang="uk"]{ display:block; }
+</style>
+</head>
+<body class="lang-en">
+
+<div class="topbar">
+  <div class="brand">BUDAPEST · SEP 2026</div>
+  <div class="daynav">
+    <a href="#fri">FRI</a>
+    <a href="#sat">SAT</a>
+    <a href="#sun">SUN</a>
+  </div>
+  <div class="langswitch">
+    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="btn-uk" onclick="setLang('uk')">UK</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">
+    <span data-lang="en">A weekend in</span>
+    <span data-lang="uk">Уікенд у</span>
+  </div>
+  <h1>
+    <span data-lang="en">Budapest</span>
+    <span data-lang="uk">Будапешті</span>
+  </h1>
+  <div class="dates">18–20 SEPTEMBER 2026</div>
+  <div class="sub">
+    <span data-lang="en">A girls' weekend, planned with love — <b>happy birthday.</b></span>
+    <span data-lang="uk">Дівочі вихідні, сплановані з любов'ю — <b>з днем народження.</b></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <ul class="plain-list plan-summary">
+    <li data-lang="en">Friday, late afternoon — arrival, settle in, Thai dinner to kick things off</li>
+    <li data-lang="uk">П'ятниця, ближче до вечора — приїзд, заселення, тайська вечеря на початок</li>
+    <li data-lang="en">Saturday — a full day built around experiences, ending with a Hungarian dinner and a rooftop view</li>
+    <li data-lang="uk">Субота — насичений день, побудований на враженнях, який завершується угорською вечерею та видом з даху</li>
+    <li data-lang="en">Sunday, until late morning — a slow breakfast before heading to the airport</li>
+    <li data-lang="uk">Неділя, до пізнього ранку — неспішний сніданок перед виїздом в аеропорт</li>
+  </ul>
+  <p class="note" data-lang="en">Tap any place name to open it in Google Maps — photos, reviews and directions all in one tap.</p>
+  <p class="note" data-lang="uk">Торкніться назви місця, щоб відкрити його в Google Maps — фото, відгуки й маршрут в один дотик.</p>
+
+  <!-- HOTEL -->
+  <div class="hotel-card">
+    <div data-lang="en"><div class="htitle">Where you're staying</div></div>
+    <div data-lang="uk"><div class="htitle">Де ви зупинитеся</div></div>
+    <div class="htitle" style="margin-top:2px;">Verno House, Vignette Collection</div>
+    <div class="haddr">Október 6. utca 26, 1051 Budapest</div>
+    <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Verno%20House%20Budapest%20Vignette%20Collection%20Okt%C3%B3ber%206%20utca%2026">
+      <span data-lang="en">Open in Google Maps</span><span data-lang="uk">Відкрити в Google Maps</span>
+    </a>
+    <p data-lang="en">Boutique 5-star, right in the heart of the action:</p>
+    <p data-lang="uk">Бутік-готель 5*, просто в центрі подій:</p>
+    <ul>
+      <li data-lang="en">Danube promenade &amp; Ötkert — ~5 min on foot</li>
+      <li data-lang="uk">Набережна Дунаю та Ötkert — ~5 хв пішки</li>
+      <li data-lang="en">St. Stephen's Basilica &amp; Café Kör — ~5 min on foot</li>
+      <li data-lang="uk">Базиліка Св. Іштвана та Café Kör — ~5 хв пішки</li>
+      <li data-lang="en">Gozsdu Udvar &amp; the Jewish Quarter — ~15 min on foot</li>
+      <li data-lang="uk">Gozsdu Udvar та Єврейський квартал — ~15 хв пішки</li>
+      <li data-lang="en">Great Market Hall — ~15–20 min on foot</li>
+      <li data-lang="uk">Great Market Hall — ~15–20 хв пішки</li>
+    </ul>
+  </div>
+
+  <!-- ===================== FRIDAY ===================== -->
+  <div id="fri" class="stamp-row">
+    <div class="stamp"><div class="d">SEP</div><div class="n">18</div></div>
+    <div class="daytitle">
+      <h2 data-lang="en">Friday — Arrival Evening</h2>
+      <h2 data-lang="uk">П'ятниця — вечір приїзду</h2>
+      <div class="datestr"><span data-lang="en">Landing late afternoon</span><span data-lang="uk">Прибуття ближче до вечора</span></div>
+    </div>
+  </div>
+
+  <div class="section-label" data-lang="en">Dinner — Thai, three ideas</div>
+  <div class="section-label" data-lang="uk">Вечеря — тайська кухня, три варіанти</div>
+
+  <div id="cards-thai"></div>
+
+  <div class="section-label" data-lang="en">After dinner</div>
+  <div class="section-label" data-lang="uk">Після вечері</div>
+  <p class="note" data-lang="en" style="font-style:normal;">A slow walk to the Danube promenade is worth it even on arrival night — Parliament lit gold against black water. From there, if there's energy for more:</p>
+  <p class="note" data-lang="uk" style="font-style:normal;">Неспішна прогулянка до набережної Дунаю варта того навіть у вечір приїзду — Парламент, підсвічений золотом на тлі чорної води. Звідти, якщо залишаться сили:</p>
+
+  <div id="cards-friday-night"></div>
+
+  <!-- ===================== SATURDAY ===================== -->
+  <div id="sat" class="stamp-row">
+    <div class="stamp"><div class="d">SEP</div><div class="n">19</div></div>
+    <div class="daytitle">
+      <h2 data-lang="en">Saturday — The Full Day</h2>
+      <h2 data-lang="uk">Субота — повний день</h2>
+      <div class="datestr"><span data-lang="en">Breakfast at the hotel, then dive in</span><span data-lang="uk">Сніданок у готелі, а далі — вперед</span></div>
+    </div>
+  </div>
+
+  <div class="section-label" data-lang="en">Morning · between breakfast and lunch</div>
+  <div class="section-label" data-lang="uk">Ранок · між сніданком та обідом</div>
+  <div id="cards-morning"></div>
+
+  <div class="section-label" data-lang="en">Lunch — three restaurant ideas</div>
+  <div class="section-label" data-lang="uk">Обід — три ідеї ресторанів</div>
+  <div id="cards-lunch"></div>
+
+  <div class="section-label" data-lang="en">Afternoon · between lunch and dinner</div>
+  <div class="section-label" data-lang="uk">Після обіду · між обідом та вечерею</div>
+  <div id="cards-afternoon"></div>
+
+  <div class="section-label" data-lang="en">Dinner — something with meat, three ideas</div>
+  <div class="section-label" data-lang="uk">Вечеря — м'ясні страви, три ідеї</div>
+  <div id="cards-dinner"></div>
+
+  <div class="section-label" data-lang="en">Evening — nice bars, three ideas</div>
+  <div class="section-label" data-lang="uk">Вечір — гарні бари, три ідеї</div>
+  <div id="cards-bars"></div>
+
+  <div class="section-label" data-lang="en">Evening — beautiful in the dark, three ideas</div>
+  <div class="section-label" data-lang="uk">Вечір — красиві місця в темряві, три ідеї</div>
+  <div id="cards-night"></div>
+
+  <!-- ===================== SUNDAY ===================== -->
+  <div id="sun" class="stamp-row">
+    <div class="stamp"><div class="d">SEP</div><div class="n">20</div></div>
+    <div class="daytitle">
+      <h2 data-lang="en">Sunday — Departure Morning</h2>
+      <h2 data-lang="uk">Неділя — ранок від'їзду</h2>
+      <div class="datestr"><span data-lang="en">Breakfast at the hotel, no rush</span><span data-lang="uk">Сніданок у готелі, без поспіху</span></div>
+    </div>
+  </div>
+  <div id="cards-sunday"></div>
+
+  <!-- MUST-DO -->
+  <div class="section-label" data-lang="en">Must-do</div>
+  <div class="section-label" data-lang="uk">Обов'язково</div>
+  <ul class="plain-list">
+    <li data-lang="en">The Danube at night with Parliament illuminated — non-negotiable</li>
+    <li data-lang="uk">Дунай уночі з підсвіченим Парламентом — без варіантів</li>
+    <li data-lang="en">One proper Hungarian meal (Saturday dinner covers this)</li>
+    <li data-lang="uk">Одна справжня угорська страва (суботня вечеря це покриває)</li>
+    <li data-lang="en">One rooftop or hilltop view over the whole city</li>
+    <li data-lang="uk">Один вид на все місто з даху або пагорба</li>
+  </ul>
+
+  <div class="section-label" data-lang="en">Optional, if there's time &amp; energy</div>
+  <div class="section-label" data-lang="uk">Додатково, якщо залишиться час і сили</div>
+  <ul class="plain-list">
+    <li data-lang="en">Museum visits</li>
+    <li data-lang="uk">Відвідування музеїв</li>
+    <li data-lang="en">Extra shopping detours in the Jewish Quarter</li>
+    <li data-lang="uk">Додаткові заходи по крамницях у Єврейському кварталі</li>
+    <li data-lang="en">A second bar or a later night out</li>
+    <li data-lang="uk">Другий бар або пізніший вихід у ніч</li>
+  </ul>
+
+  <!-- TIPS -->
+  <div class="section-label" data-lang="en">Practical tips</div>
+  <div class="section-label" data-lang="uk">Практичні поради</div>
+  <div data-lang="en">
+    <p class="tip"><b>Weather —</b> mild, often sunny mid-September; bring a light jacket for evenings.</p>
+    <p class="tip"><b>Shoes —</b> comfortable ones. The centre is beautiful but cobblestoned.</p>
+    <p class="tip"><b>Golden hour —</b> sunset ~7:15–7:30pm, good timing for the Danube before dinner.</p>
+    <p class="tip"><b>Reservations —</b> book dinner &amp; rooftop tables ahead, especially Saturday.</p>
+    <p class="tip"><b>Money —</b> cash and card both fine; tipping ~10–15% is customary.</p>
+    <p class="tip"><b>Getting around —</b> very walkable centre; metro &amp; trams are cheap if feet get tired.</p>
+    <p class="tip"><b>Fisherman's Bastion —</b> upper terraces charge by day, free (and best) after dark.</p>
+  </div>
+  <div data-lang="uk">
+    <p class="tip"><b>Погода —</b> м'яка, зазвичай сонячна середина вересня; візьміть легку куртку на вечір.</p>
+    <p class="tip"><b>Взуття —</b> зручне. Центр гарний, але брукований.</p>
+    <p class="tip"><b>Золота година —</b> захід сонця ~19:15–19:30, вдалий час для Дунаю перед вечерею.</p>
+    <p class="tip"><b>Бронювання —</b> бронюйте столики заздалегідь, особливо на суботу.</p>
+    <p class="tip"><b>Гроші —</b> готівка й картки приймаються; чайові ~10–15% — звична практика.</p>
+    <p class="tip"><b>Пересування —</b> центр зручний для прогулянок; метро й трамваї дешеві.</p>
+    <p class="tip"><b>Риб'ярський бастіон —</b> вдень платний, безкоштовний (і найкращий) — вночі.</p>
+  </div>
+
+  <div class="pagefoot">
+    <span data-lang="en">Have the most wonderful weekend. 💛</span>
+    <span data-lang="uk">Гарних вам вихідних. 💛</span>
+  </div>
+
+</div>
+
+<script>
+function mapURL(q){ return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q); }
+const pinSVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s7-7.58 7-13A7 7 0 0 0 5 9c0 5.42 7 13 7 13Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.3" stroke="currentColor" stroke-width="2"/></svg>';
+
+function card(item){
+  const mapQ = item.map;
+  const nameHref = mapURL(mapQ);
+  let sub = "";
+  if(item.place){
+    sub = `<div class="place" data-lang="en">${item.place.en}</div><div class="place" data-lang="uk">${item.place.uk}</div>`;
+  }
+  return `<div class="card">
+    <div class="row">
+      <a class="name-link" target="_blank" rel="noopener" href="${nameHref}">${pinSVG}${item.name}</a>
+    </div>
+    ${sub}
+    <p class="desc" data-lang="en">${item.desc.en}</p>
+    <p class="desc" data-lang="uk">${item.desc.uk}</p>
+    <a class="maplink" target="_blank" rel="noopener" href="${nameHref}">
+      <span data-lang="en">Map &amp; info</span><span data-lang="uk">Карта й інформація</span>
+    </a>
+  </div>`;
+}
+
+const DATA = {
+  thai: [
+    { name:"Tom Yum Thai Restaurant", map:"Tom Yum Thai Restaurant, Andrássy út 18, Budapest",
+      place:{en:"Andrássy út 18", uk:"Andrássy út 18"},
+      desc:{en:"One of the most loved Thai kitchens in the city — a huge menu of 50+ specialties, warm and unpretentious, right at the start of Budapest's grand boulevard.",
+            uk:"Один із найулюбленіших тайських ресторанів міста — величезне меню з понад 50 страв, тепла й невимушена атмосфера, на початку головного проспекту Будапешта."} },
+    { name:"Bangkok Thai Restaurant", map:"Bangkok Thai Restaurant, Budapest",
+      place:{en:"District V, Inner City", uk:"5-й район, історичний центр"},
+      desc:{en:"Small, cozy, and clearly run by people who love what they do. Genuinely authentic flavours and a warm welcome.",
+            uk:"Невеликий, затишний заклад, який тримають люди, що люблять свою справу. Справді автентичні смаки й теплий прийом."} },
+    { name:"Padthai Wokbar", map:"Padthai Wokbar, Egyetem tér, Budapest",
+      place:{en:"Egyetem tér", uk:"Egyetem tér"},
+      desc:{en:"Fast, unfussy, and popular with local students and young professionals — a relaxed, easy option for a lighter first night.",
+            uk:"Швидкий, невибагливий заклад, популярний серед місцевих студентів і молодих професіоналів."} },
+  ],
+  fridayNight: [
+    { name:"Gozsdu Udvar", map:"Gozsdu Udvar, Budapest",
+      place:{en:"~15 min walk from your hotel", uk:"~15 хв пішки від готелю"},
+      desc:{en:"A string of connected courtyards in the Jewish Quarter lined with dozens of bars, pubs and small restaurants — always lively on a Friday night.",
+            uk:"Низка з'єднаних дворів у Єврейському кварталі з десятками барів, пабів і ресторанів — завжди жваво в п'ятницю ввечері."} },
+    { name:"Ötkert", map:"Ötkert, Zrínyi utca 4/A, Budapest",
+      place:{en:"~5 min walk from your hotel", uk:"~5 хв пішки від готелю"},
+      desc:{en:"For proper dancing — a lively club with two dance floors and different music in each. Doesn't get going until later, so it's a good last stop.",
+            uk:"Для справжніх танців — жвавий клуб із двома танцполами й різною музикою на кожному. Оживає лише пізніше — гарна остання зупинка."} },
+  ],
+  morning: [
+    { name:"Wander Újlipótváros & Bartók Béla Boulevard", map:"Bartók Béla út, Budapest",
+      desc:{en:"Where Budapest's young locals actually spend a Saturday morning — Art Deco &amp; Bauhaus buildings, independent boutiques, small galleries, excellent coffee.",
+            uk:"Тут молоді місцеві мешканці Будапешта насправді проводять суботній ранок — ар-деко та баугауз, незалежні бутіки, галереї, чудова кава."} },
+    { name:"Great Market Hall, early", map:"Great Market Hall, Budapest",
+      place:{en:"before 10am", uk:"до 10:00"},
+      desc:{en:"Go before the tour groups arrive, while it's full of locals doing Saturday shopping — paprika, cheese, fresh produce, a beautiful neo-Gothic roof.",
+            uk:"Ідіть до туристичних груп, поки зал повний місцевих — паприка, сир, свіжі продукти, красивий неоготичний дах."} },
+    { name:"Szabó Ervin Library", map:"Szabó Ervin Library, Budapest",
+      place:{en:"inside Wenckheim Palace", uk:"всередині палацу Венкгайм"},
+      desc:{en:"One of the city's best-kept secrets: gilded reading rooms and painted ceilings, barely any tourists.",
+            uk:"Один із найкраще збережених секретів міста: позолочені читальні зали й розписані стелі, майже без туристів."} },
+  ],
+  lunch: [
+    { name:"Stand25 Bistro", map:"Stand25 Bistro, Budapest",
+      desc:{en:"Modern, playful Hungarian bistro cooking (Bib Gourmand), relaxed and full of locals rather than tour groups.",
+            uk:"Сучасна, грайлива угорська бістро-кухня (Bib Gourmand), невимушена атмосфера, повна місцевих."} },
+    { name:"Kőleves", map:"Kőleves Restaurant, Budapest",
+      place:{en:"Jewish Quarter", uk:"Єврейський квартал"},
+      desc:{en:"A neighbourhood institution serving generous, comforting Hungarian-Jewish home cooking in a lively courtyard.",
+            uk:"Заклад-легенда району, щедра, затишна єврейсько-угорська домашня кухня в атмосфері жвавого дворика."} },
+    { name:"Fricska Gastropub", map:"Fricska Gastropub, Budapest",
+      place:{en:"Buda side", uk:"буда, інший берег"},
+      desc:{en:"Inventive, unpretentious modern Hungarian food, well loved by locals wanting something different.",
+            uk:"Винахідлива, невимушена сучасна угорська кухня, яку люблять місцеві."} },
+  ],
+  afternoon: [
+    { name:"Chocolate or pastry workshop", map:"chocolate making workshop, Budapest",
+      desc:{en:"A small-group, hands-on class making Hungarian pastries or chocolates from scratch — a great excuse to laugh together.",
+            uk:"Заняття в невеликій групі з приготування угорської випічки чи шоколаду з нуля — привід посміятися разом."} },
+    { name:"Bikes or a rowboat, Margaret Island", map:"Margaret Island, Budapest",
+      desc:{en:"The green island in the middle of the Danube that locals treat as their back garden — musical fountain, Japanese garden, almost no traffic.",
+            uk:"Зелений острів посеред Дунаю, який місцеві сприймають як задній двір — музичний фонтан, японський сад, майже без транспорту."} },
+    { name:"Design & vintage wander", map:"Kazinczy utca, Budapest",
+      place:{en:"Kazinczy & Király utca, Jewish Quarter", uk:"вулиці Kazinczy та Király"},
+      desc:{en:"Indie fashion, jewellery designers, concept stores and vintage shops tucked into courtyards.",
+            uk:"Незалежна мода, ювелірні дизайнери, концептуальні магазини та вінтажні крамниці у внутрішніх двориках."} },
+  ],
+  dinner: [
+    { name:"Café Kör", map:"Café Kör, Budapest",
+      place:{en:"near St. Stephen's Basilica", uk:"біля Базиліки Св. Іштвана"},
+      desc:{en:"Bustling, cozy, packed with locals — old-school decor, handwritten daily menu. The beef goulash here is exactly what it should be.",
+            uk:"Жвавий, затишний, повний місцевих — старомодний інтер'єр, щоденне меню від руки. Яловичий гуляш тут саме такий, яким має бути."} },
+    { name:"Belvárosi Disznótoros", map:"Belvárosi Disznótoros, Király utca, Budapest",
+      place:{en:"Király utca", uk:"Király utca"},
+      desc:{en:"A casual, market-style meat counter — sausages, pork knuckle, roast meats by weight. Cheap, hearty, full of locals.",
+            uk:"Невимушений м'ясний прилавок у стилі ринку — ковбаски, свиняча рулька, печене м'ясо на вагу."} },
+    { name:"Gettó Gulyás", map:"Gettó Gulyás, Budapest",
+      place:{en:"Jewish Quarter", uk:"Єврейський квартал"},
+      desc:{en:"Cozy and completely unpretentious, built around one thing: rich goulash and other Hungarian stews.",
+            uk:"Затишний і без пафосу заклад, побудований навколо насиченого гуляшу та угорських рагу."} },
+  ],
+  bars: [
+    { name:"Leo Rooftop", map:"Leo Rooftop Bar, Budapest",
+      place:{en:"on the Chain Bridge", uk:"на Ланцюговому мосту"},
+      desc:{en:"Relaxed and low-key, popular with in-the-know locals as much as visitors. Good food and mocktails too.",
+            uk:"Розслаблена атмосфера, популярна серед обізнаних місцевих. Хороша їжа й моктейлі теж є."} },
+    { name:"White Raven", map:"White Raven Rooftop Bar, Hilton Budapest",
+      place:{en:"Hilton Budapest, Castle District", uk:"Hilton Budapest, Замковий район"},
+      desc:{en:"Looks straight across the Danube to Parliament; quieter than the big central rooftops.",
+            uk:"Вид прямо через Дунай на Парламент; тихіше за великі центральні дахові бари."} },
+    { name:"360 Bar", map:"360 Bar, Andrássy út, Budapest",
+      place:{en:"Andrássy Avenue", uk:"проспект Андраші"},
+      desc:{en:"More casual and affordable, with beanbags, a laid-back crowd, and simple food if hunger strikes.",
+            uk:"Більш невимушений і доступний, з пуфами-мішками, розслабленою публікою та простою їжею."} },
+  ],
+  night: [
+    { name:"Danube promenade, Chain Bridge → Parliament", map:"Hungarian Parliament Building, Budapest",
+      desc:{en:"The single most beautiful walk in the city after dark — Parliament fully lit, the water throwing the light back at you.",
+            uk:"Найкрасивіша прогулянка містом після настання темряви — Парламент повністю підсвічений."} },
+    { name:"Fisherman's Bastion, after dark", map:"Fisherman's Bastion, Budapest",
+      desc:{en:"Fairy-tale white turrets, lit up and far emptier at night, with the best view back across the river to Parliament.",
+            uk:"Казкові білі вежі, підсвічені й значно менш людні вночі, з найкращим видом на Парламент."} },
+    { name:"Gellért Hill / Citadella", map:"Citadella, Budapest",
+      desc:{en:"A bit of a climb (or a short taxi), but the whole city glitters below. Best on a clear night.",
+            uk:"Трохи довелося підійматися (або таксі), але все місто виблискує внизу. Найкраще у ясну ніч."} },
+  ],
+  sunday: [
+    { name:"Linger over hotel breakfast", map:"Verno House Budapest, Október 6 utca 26",
+      desc:{en:"No agenda needed — Verno House does a proper spread (buffet, à la carte, vegan options). No need to rush out.",
+            uk:"Жодного плану — у Verno House подають гідний вибір (шведський стіл, страви на замовлення, веганські варіанти)."} },
+    { name:"Selah Coffee House", map:"Selah Coffee House, Budapest",
+      place:{en:"if there's time for one more coffee out", uk:"якщо залишиться час на каву поза готелем"},
+      desc:{en:"Cosy, relaxed, genuinely excellent coffee — a nice detour while packing up.",
+            uk:"Затишна, спокійна, справді чудова кава — приємна зупинка, поки збираєте речі."} },
+    { name:"Portobello Coffee, Brunch & Wine", map:"Portobello Coffee Brunch and Wine, Budapest",
+      place:{en:"if there's time for one more coffee out", uk:"якщо залишиться час на каву поза готелем"},
+      desc:{en:"A local favourite in the heart of the city — good for a final sit outside before the airport.",
+            uk:"Улюблене місце місцевих у серці міста — гарне місце востаннє посидіти надворі."} },
+  ],
+};
+
+function fillSection(id, items){
+  document.getElementById(id).innerHTML = items.map(card).join("");
+}
+fillSection("cards-thai", DATA.thai);
+fillSection("cards-friday-night", DATA.fridayNight);
+fillSection("cards-morning", DATA.morning);
+fillSection("cards-lunch", DATA.lunch);
+fillSection("cards-afternoon", DATA.afternoon);
+fillSection("cards-dinner", DATA.dinner);
+fillSection("cards-bars", DATA.bars);
+fillSection("cards-night", DATA.night);
+fillSection("cards-sunday", DATA.sunday);
+
+function setLang(lang){
+  document.body.classList.remove("lang-en","lang-uk");
+  document.body.classList.add("lang-"+lang);
+  document.getElementById("btn-en").classList.toggle("active", lang==="en");
+  document.getElementById("btn-uk").classList.toggle("active", lang==="uk");
+  document.documentElement.setAttribute("lang", lang);
+}
+</script>
+</body>
+</html>
